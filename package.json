@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "serve": "live-server public",
     "build:dev": "webpack",
     "build:prod": "webpack -p --env 'production'",
     "dev-server": "webpack-dev-server --open",
-    "test": "jest --config=jest.config.json"
+    "test": "jest --config=jest.config.json",
+    "postinstall": "npm run build:prod"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +39,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "express": "^4.16.2",
     "moment": "^2.19.1",
     "normalize.css": "^7.0.0",
     "react": "^16.0.0",
