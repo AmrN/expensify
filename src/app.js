@@ -12,10 +12,6 @@ import { setTextFilter } from './actions/filters';
 
 const store = configureStore();
 
-store.dispatch(addExpense({ description: 'water bill', amount: 1000, createdAt: 900 }));
-store.dispatch(addExpense({ description: 'gas bill', amount: 400, createdAt: 400 }));
-store.dispatch(addExpense({ description: 'rent', amount: 109500, createdAt: -1000 }));
-
 const jsx = (
   <Provider store={store}>
     <AppRouter />
