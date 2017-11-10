@@ -3,7 +3,11 @@ import { shallow } from 'enzyme';
 import { EditExpensePage } from '../../components/EditExpensePage';
 import expenses from '../fixtures/expenses';
 
-let historySpy, editExpenseSpy, removeExpenseSpy, expense, wrapper;
+let historySpy,
+  editExpenseSpy,
+  removeExpenseSpy,
+  expense,
+  wrapper;
 beforeEach(() => {
   historySpy = {
     push: jest.fn(),
@@ -11,15 +15,13 @@ beforeEach(() => {
   removeExpenseSpy = jest.fn();
   editExpenseSpy = jest.fn();
   expense = expenses[0];
-  wrapper = shallow(
-    <EditExpensePage
-      editExpense={editExpenseSpy}
-      removeExpense={removeExpenseSpy}
-      history={historySpy}
-      expense={expense}
-    />
-  );
-})
+  wrapper = shallow(<EditExpensePage
+    editExpense={editExpenseSpy}
+    removeExpense={removeExpenseSpy}
+    history={historySpy}
+    expense={expense}
+  />);
+});
 
 test('should render EditExpensePage correctly', () => {
   expect(wrapper).toMatchSnapshot();

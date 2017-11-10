@@ -1,13 +1,14 @@
 import React from 'react';
 import ExpenseForm from './ExpenseForm';
 import { connect } from 'react-redux';
-import { addExpense } from '../actions/expenses';
+import { startAddExpense } from '../actions/expenses';
 
 export class AddExpensePage extends React.Component {
   handleSubmit = (expense) => {
-    this.props.addExpense(expense);
+    this.props.startAddExpense(expense);
     this.props.history.push('/');
   }
+
   render() {
     return (
       <div>
@@ -20,4 +21,4 @@ export class AddExpensePage extends React.Component {
   }
 }
 
-export default connect(null, { addExpense })(AddExpensePage);
+export default connect(null, { startAddExpense })(AddExpensePage);

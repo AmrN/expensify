@@ -13,25 +13,21 @@ test('should call addExpense with expense when handleSubmit is called', () => {
     description: 'coffee',
     amount: 123123,
   };
-  const addExpenseSpy = jest.fn();
-  const wrapper = shallow(
-    <AddExpensePage
-      addExpense={addExpenseSpy}
-      history={{ push: () => { } }}
-    />
-  );
+  const startAddExpenseSpy = jest.fn();
+  const wrapper = shallow(<AddExpensePage
+    startAddExpense={startAddExpenseSpy}
+    history={{ push: () => { } }}
+  />);
   wrapper.instance().handleSubmit(expense);
-  expect(addExpenseSpy).toHaveBeenCalledWith(expense);
+  expect(startAddExpenseSpy).toHaveBeenCalledWith(expense);
 });
 
 test('should go to home when handleSubmit is called', () => {
   const historyPushSpy = jest.fn();
-  const wrapper = shallow(
-    <AddExpensePage
-      addExpense={() => { }}
-      history={{ push: historyPushSpy }}
-    />
-  );
+  const wrapper = shallow(<AddExpensePage
+    startAddExpense={() => { }}
+    history={{ push: historyPushSpy }}
+  />);
   wrapper.instance().handleSubmit();
   expect(historyPushSpy).toHaveBeenCalledWith('/');
 });
