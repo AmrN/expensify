@@ -1,5 +1,5 @@
-import filtersReducer from '../../reducers/filters';
 import moment from 'moment';
+import filtersReducer from '../../reducers/filters';
 
 test('should setup default filter values', () => {
   const state = filtersReducer(undefined, { type: '@@INIT' });
@@ -14,12 +14,12 @@ test('should setup default filter values', () => {
 test('should set sortBy to amount', () => {
   const state = filtersReducer(undefined, {
     type: 'SORT_BY_AMOUNT',
-  })
+  });
   expect(state.sortBy).toBe('amount');
 });
 
 test('should set sortBy to date', () => {
-  const currentState = { 
+  const currentState = {
     text: '',
     sortBy: 'amount',
     startDate: undefined,
@@ -45,7 +45,6 @@ test('should set startDate filter', () => {
     date,
   });
   expect(state.startDate).toBe(date);
-
 });
 
 test('should set endDate filter', () => {
