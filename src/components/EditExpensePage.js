@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import { editExpense, removeExpense } from '../actions/expenses';
+import { editExpense, startRemoveExpense } from '../actions/expenses';
 
 export class EditExpensePage extends React.Component {
   handleExpenseFormSubmit = (updatedExpense) => {
@@ -10,8 +10,10 @@ export class EditExpensePage extends React.Component {
   }
 
   handleRemoveExpense = () => {
-    this.props.removeExpense(this.props.expense.id);
-    this.props.history.push('/');
+    this.props.startRemoveExpense(this.props.expense.id)
+      .then(() => {
+        this.props.history.push('/');
+      });
   }
 
   render() {
@@ -28,7 +30,7 @@ export class EditExpensePage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  expense: state.expenses.find((el) => el.id === ownProps.match.params.id),
+  expense: state.expenses.find(el => el.id === ownProps.match.params.id),
 });
 
-export default connect(mapStateToProps, { editExpense, removeExpense })(EditExpensePage);
+export default connect(mapStateToProps, { editExpense, startRemoveExpense })(EditExpensePage);

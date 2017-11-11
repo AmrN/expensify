@@ -1,4 +1,4 @@
-import { startAddExpense, addExpense, editExpense, removeExpense, setExpenses, startSetExpenses } from '../../actions/expenses';
+import { startAddExpense, addExpense, editExpense, removeExpense, setExpenses, startSetExpenses, startRemoveExpense } from '../../actions/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import database from '../../firebase/firebase';
@@ -134,6 +134,23 @@ describe('database interactions', () => {
         });
       })
       .catch(e => console.log(e));
+  });
+
+  test('should remove expense from database', () => {
+    const store = createMockStore();
+    return store.dispatch(startRemoveExpense(expenses[0].id))
+      .then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: 'REMOVE_EXPENSE',
+          id: expenses[0].id,
+        });
+      })
+      .then(() => database.ref(`expenses/${expenses[0].id}`)
+        .once('value')
+        .then((snapshot) => {
+          expect(snapshot.val()).toBe(null);
+        }));
   });
 });
 

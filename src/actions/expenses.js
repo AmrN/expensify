@@ -46,8 +46,15 @@ export const setExpenses = expenses => ({
 export const startSetExpenses = () => dispatch => database.ref('expenses')
   .once('value')
   .then((snapshot) => {
-    let expenses = snapshot.val();
+    let expenses = snapshot.val() || {};
     expenses = Object.keys(expenses).map(id => ({ id, ...expenses[id] }));
     return dispatch(setExpenses(expenses));
   });
+
+export const startRemoveExpense = id => dispatch => database.ref(`expenses/${id}`)
+  .remove()
+  .then(() => {
+    dispatch(removeExpense(id));
+  })
+  .catch(e => console.log('Removing expense faild: ', e));
 
