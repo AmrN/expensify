@@ -58,3 +58,10 @@ export const startRemoveExpense = id => dispatch => database.ref(`expenses/${id}
   })
   .catch(e => console.log('Removing expense faild: ', e));
 
+export const startEditExpense = (id, newExpense) => dispatch => database.ref(`expenses/${id}`)
+  .update(newExpense)
+  .then(() => {
+    dispatch(editExpense(id, newExpense));
+  })
+  .catch(e => console.log('Updated expense failed: ', e));
+

@@ -4,7 +4,7 @@ import { EditExpensePage } from '../../components/EditExpensePage';
 import expenses from '../fixtures/expenses';
 
 let historySpy,
-  editExpenseSpy,
+  startEditExpenseSpy,
   startRemoveExpenseSpy,
   expense,
   wrapper;
@@ -14,10 +14,10 @@ beforeEach(() => {
     push: jest.fn(),
   };
   startRemoveExpenseSpy = jest.fn();
-  editExpenseSpy = jest.fn();
+  startEditExpenseSpy = jest.fn();
   [expense] = expenses;
   wrapper = shallow(<EditExpensePage
-    editExpense={editExpenseSpy}
+    startEditExpense={startEditExpenseSpy}
     startRemoveExpense={startRemoveExpenseSpy}
     history={historySpy}
     expense={expense}
@@ -33,15 +33,19 @@ test('should handle expense form submit', () => {
     ...expenses[0],
     description: 'updated',
   };
-
+  const startEditExpensePromise = Promise.resolve();
+  startEditExpenseSpy.mockReturnValueOnce(startEditExpensePromise);
   wrapper.find('ExpenseForm').simulate('submit', updatedExpense);
-  expect(editExpenseSpy).toHaveBeenCalledWith(updatedExpense.id, updatedExpense);
-  expect(historySpy.push).toHaveBeenCalledWith('/');
+  expect(startEditExpenseSpy).toHaveBeenCalledWith(updatedExpense.id, updatedExpense);
+
+  return startEditExpensePromise.then(() => {
+    expect(historySpy.push).toHaveBeenCalledWith('/');
+  });
 });
 
 test('should handle removing expense', () => {
   const startRemoveExpensePromise = Promise.resolve();
-  startRemoveExpenseSpy.mockReturnValue(startRemoveExpensePromise);
+  startRemoveExpenseSpy.mockReturnValueOnce(startRemoveExpensePromise);
 
   wrapper.find('button').simulate('click');
 

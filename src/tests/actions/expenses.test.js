@@ -1,4 +1,13 @@
-import { startAddExpense, addExpense, editExpense, removeExpense, setExpenses, startSetExpenses, startRemoveExpense } from '../../actions/expenses';
+import {
+  startAddExpense,
+  addExpense,
+  editExpense,
+  removeExpense,
+  setExpenses,
+  startSetExpenses,
+  startRemoveExpense,
+  startEditExpense,
+} from '../../actions/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import database from '../../firebase/firebase';
@@ -152,6 +161,34 @@ describe('database interactions', () => {
           expect(snapshot.val()).toBe(null);
         }));
   });
+
+  test('should update expense in database', () => {
+    const store = createMockStore();
+    const newExpense = {
+      description: 'updated',
+      amount: 12.12,
+    };
+    const { id } = expenses[0];
+    return store.dispatch(startEditExpense(id, newExpense))
+      .then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: 'EDIT_EXPENSE',
+          id,
+          expense: newExpense,
+        });
+        return database.ref(`expenses/${id}`)
+          .once('value');
+      })
+      .then((snapshot) => {
+        const savedExpense = snapshot.val();
+        savedExpense.id = id;
+        expect(savedExpense).toEqual({
+          ...expenses[0],
+          ...newExpense,
+        });
+      });
+  });
 });
 
 
@@ -162,4 +199,3 @@ test('should setup set expenses action object with data', () => {
     expenses,
   });
 });
-
