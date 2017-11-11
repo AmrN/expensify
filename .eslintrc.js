@@ -19,5 +19,6 @@ module.exports = {
         "no-param-reassign": 0,
         "react/jsx-filename-extension": 0,
         "global-require": 0,
+        "one-var": 0,
     },
 };
