@@ -5,7 +5,7 @@ import {
   sortByAmount,
   sortByDate,
   setStartDate,
-  setEndDate
+  setEndDate,
 } from '../actions/filters';
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
@@ -25,15 +25,15 @@ export class ExpenseListFilters extends React.Component {
   handleFocusChange = (calendarFocused) => {
     this.setState(() => ({
       calendarFocused,
-    }))
+    }));
   }
 
   handleTextChange = (e) => {
-    this.props.setTextFilter(e.target.value)
+    this.props.setTextFilter(e.target.value);
   }
 
   handleSortChange = (e) => {
-    e.target.value === 'createdAt' ? this.props.sortByDate() : this.props.sortByAmount()
+    e.target.value === 'createdAt' ? this.props.sortByDate() : this.props.sortByAmount();
   }
 
   render() {
@@ -42,39 +42,52 @@ export class ExpenseListFilters extends React.Component {
       setTextFilter,
       sortByAmount,
       sortByDate,
-     } = this.props;
+    } = this.props;
 
     return (
-      <div>
-        <input
-          type="text"
-          value={filters.text}
-          onChange={this.handleTextChange} />
+      <div className="content-container">
 
-        <select
-          value={filters.sortBy}
-          onChange={this.handleSortChange}
-        >
-          <option value="createdAt">Date</option>
-          <option value="amount">Amount</option>
-        </select>
+        <div className="input-group">
+          <div className="input-group__item">
+            <input
+              type="text"
+              value={filters.text}
+              onChange={this.handleTextChange}
+              placeholder="Search Expenses"
+              className="text-input"
+            />
+          </div>
 
-        <DateRangePicker
-          startDate={filters.startDate}
-          endDate={filters.endDate}
-          onDatesChange={this.handleDatesChange}
-          focusedInput={this.state.calendarFocused}
-          onFocusChange={this.handleFocusChange}
-          numberOfMonths={1}
-          isOutsideRange={() => false}
-          showClearDates
-        />
+          <div className="input-group__item">
+            <select
+              value={filters.sortBy}
+              onChange={this.handleSortChange}
+              className="select"
+            >
+              <option value="createdAt">Date</option>
+              <option value="amount">Amount</option>
+            </select>
+          </div>
+
+          <div className="input-group__item">
+            <DateRangePicker
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+              onDatesChange={this.handleDatesChange}
+              focusedInput={this.state.calendarFocused}
+              onFocusChange={this.handleFocusChange}
+              numberOfMonths={1}
+              isOutsideRange={() => false}
+              showClearDates
+            />
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   filters: state.filters,
 });
 
@@ -83,5 +96,5 @@ export default connect(mapStateToProps, {
   sortByAmount,
   sortByDate,
   setStartDate,
-  setEndDate
+  setEndDate,
 })(ExpenseListFilters);

@@ -20,5 +20,7 @@ module.exports = {
         "react/jsx-filename-extension": 0,
         "global-require": 0,
         "one-var": 0,
+        "jsx-a11y/anchor-is-valid": 0
     },
+    
 };
