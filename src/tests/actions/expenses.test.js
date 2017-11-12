@@ -19,6 +19,13 @@ const createMockStore = configureMockStore([thunk]);
 // eslint-disable-next-line no-undef
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
+const uid = 'test uid';
+const defaultAuthState = {
+  auth: {
+    uid,
+  },
+};
+
 const initDatabase = () => {
   const expensesData = {};
   expenses.forEach(({
@@ -28,11 +35,11 @@ const initDatabase = () => {
       description, amount, note, createdAt,
     };
   });
-  return database.ref('expenses').set(expensesData)
+  return database.ref(`users/${uid}/expenses`).set(expensesData)
     .catch(e => console.log(e));
 };
 
-const clearDatabase = () => database.ref('expenses').set(null)
+const clearDatabase = () => database.ref(`users/${uid}/expenses`).set(null)
   .catch(e => console.log(e));
 
 
@@ -74,7 +81,7 @@ describe('database interactions', () => {
   afterEach(() => clearDatabase());
 
   test('should add expense to database and store', () => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseData = {
       description: 'Mouse',
       amount: 3000,
@@ -92,7 +99,7 @@ describe('database interactions', () => {
           },
         });
 
-        return database.ref(`expenses/${actions[0].expense.id}`);
+        return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`);
       })
       .then(ref => ref.once('value'))
       .then((snapshot) => {
@@ -104,7 +111,7 @@ describe('database interactions', () => {
 
 
   test('should add expense with defaults to database and store', () => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const defaultExpense = {
       description: '',
       note: '',
@@ -122,7 +129,7 @@ describe('database interactions', () => {
             ...defaultExpense,
           },
         });
-        return database.ref(`expenses/${actions[0].expense.id}`);
+        return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`);
       })
       .then(ref => ref.once('value'))
       .then((snapshot) => {
@@ -133,7 +140,7 @@ describe('database interactions', () => {
   });
 
   test('should fetch expenses from database', () => {
-    const store = createMockStore();
+    const store = createMockStore(defaultAuthState);
     return store.dispatch(startSetExpenses())
       .then(() => {
         const actions = store.getActions();
@@ -146,7 +153,7 @@ describe('database interactions', () => {
   });
 
   test('should remove expense from database', () => {
-    const store = createMockStore();
+    const store = createMockStore(defaultAuthState);
     return store.dispatch(startRemoveExpense(expenses[0].id))
       .then(() => {
         const actions = store.getActions();
@@ -155,7 +162,7 @@ describe('database interactions', () => {
           id: expenses[0].id,
         });
       })
-      .then(() => database.ref(`expenses/${expenses[0].id}`)
+      .then(() => database.ref(`users/${uid}/expenses/${expenses[0].id}`)
         .once('value')
         .then((snapshot) => {
           expect(snapshot.val()).toBe(null);
@@ -163,7 +170,7 @@ describe('database interactions', () => {
   });
 
   test('should update expense in database', () => {
-    const store = createMockStore();
+    const store = createMockStore(defaultAuthState);
     const newExpense = {
       description: 'updated',
       amount: 12.12,
@@ -177,7 +184,7 @@ describe('database interactions', () => {
           id,
           expense: newExpense,
         });
-        return database.ref(`expenses/${id}`)
+        return database.ref(`users/${uid}/expenses/${id}`)
           .once('value');
       })
       .then((snapshot) => {
