@@ -4,10 +4,15 @@
   margin-bottom: $l-size;
 }
 
+.page-header__info {
+  font-style: italic;
+  margin-bottom: $l-size;
+}
+
 .page-header__title {
   margin: 0;
   font-weight: 300;
-
+  
   span {
     font-weight: bold;
   }
@@ -15,4 +20,9 @@
 
 .page-header__actions {
   margin-top: $m-size;
+  display: flex;
+}
+
+.page-header__actions__action {
+  margin-right: $s-size;
 }

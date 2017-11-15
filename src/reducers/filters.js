@@ -18,25 +18,31 @@ const filtersReducer = (state = filtersDefaultState, action) => {
       return {
         ...state,
         sortBy: 'amount',
-      }
+      };
     case 'SORT_BY_DATE':
       return {
         ...state,
         sortBy: 'createdAt',
-      }
+      };
     case 'SET_START_DATE':
       return {
         ...state,
         startDate: action.date,
-      }
+      };
     case 'SET_END_DATE':
       return {
         ...state,
         endDate: action.date,
-      }
+      };
+    case 'CLEAR_FILTERS':
+      return {
+        ...state,
+        text: '',
+        startDate: null,
+        endDate: null,
+      };
     default:
       return state;
-      break;
   }
 };
 

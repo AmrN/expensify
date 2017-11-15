@@ -11,12 +11,16 @@ export const sortByDate = () => ({
   type: 'SORT_BY_DATE',
 });
 
-export const setStartDate = (date) => ({
+export const setStartDate = date => ({
   type: 'SET_START_DATE',
   date,
 });
 
-export const setEndDate = (date) => ({
+export const setEndDate = date => ({
   type: 'SET_END_DATE',
   date,
+});
+
+export const clearFilters = () => ({
+  type: 'CLEAR_FILTERS',
 });
