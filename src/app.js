@@ -19,37 +19,41 @@ import LoadingPage from './components/LoadingPage';
 
 const store = configureStore();
 
-const jsx = (
-  <Provider store={store}>
-    <AppRouter />
-  </Provider>
-);
-
-
 let hasRendered = false;
-const renderApp = () => {
-  if (!hasRendered) {
-    ReactDOM.render(jsx, document.getElementById('app'));
-    hasRendered = true;
-  }
+const renderApp = (Root) => {
+  const jsx = (
+    <Provider store={store}>
+      <Root />
+    </Provider>
+  );
+  ReactDOM.render(jsx, document.getElementById('app'));
 };
-
-ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     store.dispatch(login(user.uid));
     store.dispatch(startSetExpenses())
       .then(() => {
-        renderApp();
-        // if (history.location.pathname === '/') {
-        //   history.push('/dashboard');
-        // }
+        if (!hasRendered) {
+          renderApp(AppRouter);
+          hasRendered = true;
+        }
       });
   } else {
     store.dispatch(logout());
-    renderApp();
-    // history.push('/');
+    if (!hasRendered) {
+      renderApp(AppRouter);
+      hasRendered = true;
+    }
   }
 });
 
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
+
+if (module.hot) {
+  module.hot.accept('./routers/AppRouter', () => {
+    // const Root = require('./routers/AppRouter').default;
+
+    renderApp(AppRouter);
+  });
+}
