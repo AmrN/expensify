@@ -21,3 +21,14 @@
   margin: 0 0 $m-size 0;
   line-height: 1;
 }
+
+.box-layout__actions {
+  margin-top: $l-size;
+  padding: 0 $m-size;
+}
+
+.box-layout__actions_action {
+  margin-bottom: $s-size;
+  display: flex;
+  flex-direction: column;
+}
